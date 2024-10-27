@@ -35,6 +35,21 @@
 2. Указываем заббикс сервер имя, например имя и инициалы, указываем часовой пояс, выбираем тему
 3. доходим до финиша, далее авторизуемся, логин Admin пароль zabbix
 ![Скрин веб интерфейса после авторизации в админе](image.png)
+#### Для установки zabbix-agent заббикса 7.0 с postgresql для debian 11
+1. Скачиваем deb-пакет wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian11_all.deb
+2. Распаковать его sudo dpkg -i zabbix-release_latest+debian11_all.deb
+3. обновить апт кэш sudo apt update
+4. Устанавливаем zabbix-proxy- apt install zabbix-proxy-pgsql zabbix-sql-scripts
+5. Создание пользователя БД sudo -u postgres createuser --pwprompt zabbix
+6. Создание БД sudo -u postgres createdb -O zabbix zabbix_proxy
+7. Импортируем начальную схему cat /usr/share/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
+8. Настраиваем пароль DBPassword sudo nano /etc/zabbix/zabbix_server.conf
+9. Перезапускаем systemctl restart zabbix-proxy
+10. Включаем автозапуск systemctl enable zabbix-proxy
+#### Установка веб интерфейса
+1. Переходим на ip сервера с /Zabbix http://89.169.128.193/zabbix/
+2. Указываем заббикс сервер имя, например имя и инициалы, указываем часовой пояс, выбираем тему
+3. доходим до финиша, далее авторизуемся, логин Admin пароль zabbix
 
 ---
 
@@ -76,20 +91,3 @@
 ![Создал новую вм TestMachine2 в яндекс клауде и добавил ее в мониторинг](image-5.png)
 ![log TestMachine2](image-6.png)
 ![Testmachine2 данные агента](image-7.png)
-
-## Решение:
-#### Для установки zabbix-agent заббикса 7.0 с postgresql для debian 11
-1. Скачиваем deb-пакет wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian11_all.deb
-2. Распаковать его sudo dpkg -i zabbix-release_latest+debian11_all.deb
-3. обновить апт кэш sudo apt update
-4. Устанавливаем zabbix-proxy- apt install zabbix-proxy-pgsql zabbix-sql-scripts
-5. Создание пользователя БД sudo -u postgres createuser --pwprompt zabbix
-6. Создание БД sudo -u postgres createdb -O zabbix zabbix_proxy
-7. Импортируем начальную схему cat /usr/share/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
-8. Настраиваем пароль DBPassword sudo nano /etc/zabbix/zabbix_server.conf
-9. Перезапускаем systemctl restart zabbix-proxy
-10. Включаем автозапуск systemctl enable zabbix-proxy
-#### Установка веб интерфейса
-1. Переходим на ip сервера с /Zabbix http://89.169.128.193/zabbix/
-2. Указываем заббикс сервер имя, например имя и инициалы, указываем часовой пояс, выбираем тему
-3. доходим до финиша, далее авторизуемся, логин Admin пароль zabbix
